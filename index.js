@@ -1,10 +1,36 @@
 //this is all pretty messy but it gets the job done, a lot of weird things happening
 
+
 const puppeteer = require("puppeteer-extra");
 const readline = require("readline/promises");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 const chrono = require("chrono-node");
 const fs = require("fs");
+
+export const charOptions = [
+    { value: "Fox", label: "Fox" },
+    { value: "Falco", label: "Falco" },
+    { value: "Marth", label: "Marth" },
+    { value: "Sheik", label: "Sheik" },
+    { value: "Puff", label: "Jigglypuff" },
+    { value: "CFalcon", label: "Cpt. Falcon" },
+    { value: "Peach", label: "Peach" },
+    { value: "Icies", label: "Ice Climbers" },
+    { value: "Pikachu", label: "Pikachu" },
+    { value: "Luigi", label: "Luigi" },
+    { value: "Doc", label: "Dr. Mario" },
+    { value: "YL", label: "Young Link" },
+    { value: "Samus", label: "Samus" },
+    { value: "Donkey Kong", label: "Donkey Kong" },
+    { value: "Link", label: "Link" },
+    { value: "Bowser", label: "Bowser" },
+    { value: "Ganondorf", label: "Ganondorf" },
+    { value: "GnW", label: "Game & Watch" },
+    { value: "Yoshi", label: "Yoshi" },
+]
+
+const charMap = new Map();
+charOptions.forEach(opt => charMap.set(opt.label, opt.value))
 
 puppeteer.use(StealthPlugin());
 
@@ -105,6 +131,7 @@ const main = async () => {
             l.character = playerMap.get(l.player);
         } else {
             let str = `Which character does ${l.player} play?\n`;
+            tags[i] = tags[i].filter(tag => tag !== l.player)
             for (const [index, value] of tags[i].entries()) {
                 str += `${index}: ${value}\n`;
             }
@@ -113,11 +140,20 @@ const main = async () => {
             playerMap.set(l.player, tags[i][ans]);
             l.character = tags[i][ans];
         }
-        let str1 = `Which opponent does ${l.player} play?\n`;
+
+        let oppArray = [];
         for (const [index, value] of tags[i].entries()) {
-            str1 += `${index}: ${value}\n`;
+            if (charMap.has(value) && value !== l.character) oppArray.push(value)
         }
-        const ans = await rl.question(str1);
+        if (oppArray.length === 0) l.opponent = l.character
+        else l.opponent = oppArray.join(',')
+
+        // let str1 = `Which opponent does ${l.player} play? (hit 7 to exit)\n`;
+        // for (const [index, value] of tags[i].entries()) {
+        //     str1 += `${index}: ${value}\n`;
+        // }
+        // const ans = await rl.question(str1);
+        // if (ans == 7) break;
 
         l.opponent = tags[i][ans];
         console.log(l);
