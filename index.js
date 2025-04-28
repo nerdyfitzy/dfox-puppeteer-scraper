@@ -12,7 +12,7 @@ const charOptions = [
     { value: "Marth", label: "Marth" },
     { value: "Sheik", label: "Sheik" },
     { value: "Puff", label: "Jigglypuff" },
-    { value: "CFalcon", label: "Cpt. Falcon" },
+    { value: "CFalcon", label: "Captain Falcon" },
     { value: "Peach", label: "Peach" },
     { value: "Icies", label: "Ice Climbers" },
     { value: "Pikachu", label: "Pikachu" },
