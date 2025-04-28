@@ -6,6 +6,9 @@ const chrono = require("chrono-node");
 const fs = require("fs");
 const { replacer, reviver } = require('./utils.js')
 
+puppeteer.use(StealthPlugin());
+
+
 const charOptions = [
     { value: "Fox", label: "Fox" },
     { value: "Falco", label: "Falco" },
@@ -28,15 +31,15 @@ const charOptions = [
     { value: "Yoshi", label: "Yoshi" },
 ]
 
-let charMap = new Map();
+const charMap = new Map();
+charOptions.forEach(opt => charMap.set(opt.label, opt.value))
+
+let playerMap = new Map();
 if (fs.existsSync('./players.json')) {
     const str = fs.readFileSync('./players.json')
-    charMap = JSON.parse(str, reviver)
-} else {
-    charOptions.forEach(opt => charMap.set(opt.label, opt.value))
+    playerMap = JSON.parse(str, reviver)
 }
 
-puppeteer.use(StealthPlugin());
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -116,7 +119,6 @@ const main = async () => {
     //   notes: null
     // }
 
-    const playerMap = new Map();
     for (let i = 0; i < titles.length; i++) {
         const l = {
             player: titles[i],
