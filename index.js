@@ -1,13 +1,12 @@
 //this is all pretty messy but it gets the job done, a lot of weird things happening
-
-
 const puppeteer = require("puppeteer-extra");
 const readline = require("readline/promises");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 const chrono = require("chrono-node");
 const fs = require("fs");
+const { replacer, reviver } = require('./utils.js')
 
-export const charOptions = [
+const charOptions = [
     { value: "Fox", label: "Fox" },
     { value: "Falco", label: "Falco" },
     { value: "Marth", label: "Marth" },
@@ -29,8 +28,13 @@ export const charOptions = [
     { value: "Yoshi", label: "Yoshi" },
 ]
 
-const charMap = new Map();
-charOptions.forEach(opt => charMap.set(opt.label, opt.value))
+let charMap = new Map();
+if (fs.existsSync('./players.json')) {
+    const str = fs.readFileSync('./players.json')
+    charMap = JSON.parse(str, reviver)
+} else {
+    charOptions.forEach(opt => charMap.set(opt.label, opt.value))
+}
 
 puppeteer.use(StealthPlugin());
 
@@ -155,13 +159,14 @@ const main = async () => {
         // const ans = await rl.question(str1);
         // if (ans == 7) break;
 
-        l.opponent = tags[i][ans];
         console.log(l);
         lessons.push(l);
     }
 
     console.log(lessons);
     fs.writeFileSync("lessons.json", JSON.stringify(lessons));
+    fs.writeFileSync("players.json", JSON.stringify(charMap, replacer))
+    return;
 };
 
 main();
