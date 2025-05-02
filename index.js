@@ -31,9 +31,12 @@ const charOptions = [
     { value: "Yoshi", label: "Yoshi" },
 ]
 
+//map the value seen on the patreon to the value i use for my database
 const charMap = new Map();
 charOptions.forEach(opt => charMap.set(opt.label, opt.value))
 
+//read in players.json if necessary
+//so you dont have to keep inputting characters for the same players over and over
 let playerMap = new Map();
 if (fs.existsSync('./players.json')) {
     const str = fs.readFileSync('./players.json')
@@ -154,12 +157,6 @@ const main = async () => {
         if (oppArray.length === 0) l.opponent = l.character
         else l.opponent = oppArray.join(',')
 
-        // let str1 = `Which opponent does ${l.player} play? (hit 7 to exit)\n`;
-        // for (const [index, value] of tags[i].entries()) {
-        //     str1 += `${index}: ${value}\n`;
-        // }
-        // const ans = await rl.question(str1);
-        // if (ans == 7) break;
 
         console.log(l);
         lessons.push(l);
