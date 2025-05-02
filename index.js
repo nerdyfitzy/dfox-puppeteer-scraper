@@ -144,12 +144,12 @@ const main = async () => {
             const ans = await rl.question(str);
 
             playerMap.set(l.player, tags[i][ans]);
-            l.character = tags[i][ans];
+            l.character = charMap.get(tags[i][ans]);
         }
 
         let oppArray = [];
         for (const [index, value] of tags[i].entries()) {
-            if (charMap.has(value) && value !== l.character) oppArray.push(value)
+            if (charMap.has(value) && charMap.get(value) !== l.character) oppArray.push(charMap.get(value))
         }
         if (oppArray.length === 0) l.opponent = l.character
         else l.opponent = oppArray.join(',')
