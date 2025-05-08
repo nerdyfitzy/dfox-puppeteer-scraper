@@ -157,7 +157,8 @@ const main = async () => {
         if (oppArray.length === 0) l.opponent = l.character
         else l.opponent = oppArray.join(',')
 
-
+        const last = tags[i][tags[i].length]
+        if (!charMap.has(last)) l.notes = last
         console.log(l);
         lessons.push(l);
     }
