@@ -27,7 +27,7 @@ const charOptions = [
     { value: "Link", label: "Link" },
     { value: "Bowser", label: "Bowser" },
     { value: "Ganondorf", label: "Ganondorf" },
-    { value: "GnW", label: "Game & Watch" },
+    { value: "GnW", label: "Game and Watch" },
     { value: "Yoshi", label: "Yoshi" },
 ]
 
@@ -139,13 +139,13 @@ const main = async () => {
         if (playerMap.has(l.player)) {
             l.character = playerMap.get(l.player);
         } else {
-            let str = `Which character does ${l.player} play?\n`;
+            let str = `Which character does ${l.player} play? (press 8 to exit)\n`;
             tags[i] = tags[i].filter(tag => tag !== l.player)
             for (const [index, value] of tags[i].entries()) {
                 str += `${index}: ${value}\n`;
             }
             const ans = await rl.question(str);
-
+            if (ans == '8') break;
             playerMap.set(l.player, tags[i][ans]);
             l.character = charMap.get(tags[i][ans]);
         }
